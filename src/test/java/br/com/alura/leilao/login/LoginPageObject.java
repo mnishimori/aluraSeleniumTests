@@ -1,18 +1,25 @@
 package br.com.alura.leilao.login;
 
 import br.com.alura.leilao.infrastructure.BrowserWebDriver;
+import br.com.alura.leilao.leiloes.ListaLeilaoPageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
-public class LoginTemplatePageObject {
+public class LoginPageObject {
 
-    protected static final String URL_LOGIN = "http://localhost:8080/login";
-    protected static final String URL_LANCES = "http://localhost:8080/leiloes/2";
+    private static final String URL_LOGIN = "http://localhost:8080/login";
+    private static final String URL_LANCES = "http://localhost:8080/leiloes/2";
 
-    public BrowserWebDriver browserWebDriver;
+    private BrowserWebDriver browserWebDriver;
 
-    public LoginTemplatePageObject(BrowserWebDriver browserWebDriver) {
+    public LoginPageObject(BrowserWebDriver browserWebDriver) {
         this.browserWebDriver = browserWebDriver;
+    }
+
+    public ListaLeilaoPageObject efetuarLoginUsuario(String username, String password) {
+        this.navegarParaPaginaLogin();
+        this.setarDadosUsuario(username, password);
+        return this.submeterPaginaLogin();
     }
 
     public void navegarParaPaginaLogin() {
@@ -24,8 +31,9 @@ public class LoginTemplatePageObject {
         this.browserWebDriver.getBrowser().findElement(By.id("password")).sendKeys(password);
     }
 
-    public void submeterPaginaLogin() {
+    public ListaLeilaoPageObject submeterPaginaLogin() {
         this.browserWebDriver.getBrowser().findElement(By.id("login-form")).submit();
+        return new ListaLeilaoPageObject(browserWebDriver);
     }
 
     public String identificarNomeUsuarioLogado() {
@@ -52,4 +60,7 @@ public class LoginTemplatePageObject {
         this.browserWebDriver.getBrowser().navigate().to(URL_LANCES);
     }
 
+    public BrowserWebDriver getBrowserWebDriver() {
+        return browserWebDriver;
+    }
 }

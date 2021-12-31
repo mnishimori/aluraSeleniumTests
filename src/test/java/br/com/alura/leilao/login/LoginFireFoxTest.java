@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class LoginFireFoxTest extends LoginTemplateTest {
 
     public LoginFireFoxTest() {
-        super.loginTemplatePageObject = new LoginTemplatePageObject(new FireFoxWebDriverImpl());
+        super.loginTemplatePageObject = new LoginPageObject(new FireFoxWebDriverImpl());
     }
 
     @BeforeEach
@@ -28,7 +28,7 @@ public class LoginFireFoxTest extends LoginTemplateTest {
         super.loginTemplatePageObject.setarDadosUsuario("fulano", "pass");
         super.loginTemplatePageObject.submeterPaginaLogin();
 
-        System.out.println(super.loginTemplatePageObject.browserWebDriver.getBrowser().getCurrentUrl());
+        System.out.println(super.loginTemplatePageObject.getBrowserWebDriver().getBrowser().getCurrentUrl());
     }
 
     @Override

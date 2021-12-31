@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class LoginChromeTest extends LoginTemplateTest {
 
     public LoginChromeTest() {
-        super.loginTemplatePageObject = new LoginTemplatePageObject(new ChromeWebDriverImpl());
+        super.loginTemplatePageObject = new LoginPageObject(new ChromeWebDriverImpl());
     }
 
     @Test
@@ -20,7 +20,7 @@ public class LoginChromeTest extends LoginTemplateTest {
         String nomeUsuarioLogado = super.loginTemplatePageObject.identificarNomeUsuarioLogado();
         Assertions.assertEquals("fulano", nomeUsuarioLogado);
         Assertions.assertFalse(super.loginTemplatePageObject.isPaginaLogin());
-        System.out.println(super.loginTemplatePageObject.browserWebDriver.getBrowser().getCurrentUrl());
+        System.out.println(super.loginTemplatePageObject.getBrowserWebDriver().getBrowser().getCurrentUrl());
     }
 
     @Test

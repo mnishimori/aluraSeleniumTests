@@ -5,16 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 
 public abstract class LoginTemplateTest {
 
-	protected LoginTemplatePageObject loginTemplatePageObject;
+	protected LoginPageObject loginTemplatePageObject;
 
 	@BeforeEach
 	protected void beforeEach() {
-		this.loginTemplatePageObject.browserWebDriver.iniciarNavegador();
+		this.loginTemplatePageObject.getBrowserWebDriver().iniciarNavegador();
 	}
 
 	@AfterEach
 	protected void afterEach() {
-		this.loginTemplatePageObject.browserWebDriver.finalizarNavegador();
+		this.loginTemplatePageObject.getBrowserWebDriver().finalizarNavegador();
 	}
 
 	protected abstract void deveriaEfetuarLoginComDadosValidos();
