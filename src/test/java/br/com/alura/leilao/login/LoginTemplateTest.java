@@ -1,7 +1,9 @@
 package br.com.alura.leilao.login;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public abstract class LoginTemplateTest {
 
@@ -17,10 +19,35 @@ public abstract class LoginTemplateTest {
 		this.loginTemplatePageObject.getBrowserWebDriver().finalizarNavegador();
 	}
 
-	protected abstract void deveriaEfetuarLoginComDadosValidos();
+	@Test
+	protected void deveriaEfetuarLoginComDadosValidos() {
+		this.loginTemplatePageObject.navegarParaPaginaLogin();
+		this.loginTemplatePageObject.setarDadosUsuario("fulano", "pass");
+		this.loginTemplatePageObject.submeterPaginaLogin();
 
-	protected abstract void naoDeveriaEfetuarLoginComDadosInvalidos();
+		String nomeUsuarioLogado = this.loginTemplatePageObject.identificarNomeUsuarioLogado();
+		Assertions.assertEquals("fulano", nomeUsuarioLogado);
+		Assertions.assertFalse(this.loginTemplatePageObject.isPaginaLogin());
+	}
 
-	protected abstract void naoDeveriaAcessarUrlRestritaSemEstarLogado();
+	@Test
+	protected void naoDeveriaEfetuarLoginComDadosInvalidos() {
+		this.loginTemplatePageObject.navegarParaPaginaLogin();
+
+		this.loginTemplatePageObject.setarDadosUsuario("invalido", "1234");
+		this.loginTemplatePageObject.submeterPaginaLogin();
+
+		Assertions.assertNull(this.loginTemplatePageObject.isUsuarioLogado());
+		Assertions.assertFalse(this.loginTemplatePageObject.isPaginaLogin());
+		Assertions.assertTrue(this.loginTemplatePageObject.isContainsString("Usuário e senha inválidos"));
+	}
+
+	@Test
+	protected void naoDeveriaAcessarUrlRestritaSemEstarLogado() {
+		this.loginTemplatePageObject.navegarParaPaginaLances();
+
+		Assertions.assertTrue(this.loginTemplatePageObject.isPaginaLogin());
+		Assertions.assertFalse(this.loginTemplatePageObject.isContainsString("Dados do Leilão"));
+	}
 
 }
