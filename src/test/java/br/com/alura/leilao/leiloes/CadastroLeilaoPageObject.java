@@ -1,18 +1,13 @@
 package br.com.alura.leilao.leiloes;
 
 import br.com.alura.leilao.infrastructure.BrowserWebDriver;
+import br.com.alura.leilao.util.PageObject;
 import org.openqa.selenium.By;
 
-public class CadastroLeilaoPageObject {
-
-    private BrowserWebDriver browserWebDriver;
+public class CadastroLeilaoPageObject extends PageObject {
 
     public CadastroLeilaoPageObject(BrowserWebDriver browserWebDriver) {
-        this.browserWebDriver = browserWebDriver;
-    }
-
-    public BrowserWebDriver getBrowserWebDriver() {
-        return browserWebDriver;
+        super(browserWebDriver);
     }
 
     public ListaLeilaoPageObject cadastrarLeilao(String nome, String valor, String dataAbertura) {
@@ -23,4 +18,5 @@ public class CadastroLeilaoPageObject {
 
         return new ListaLeilaoPageObject(this.browserWebDriver);
     }
+
 }

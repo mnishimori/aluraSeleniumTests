@@ -2,18 +2,18 @@ package br.com.alura.leilao.login;
 
 import br.com.alura.leilao.infrastructure.BrowserWebDriver;
 import br.com.alura.leilao.leiloes.ListaLeilaoPageObject;
+import br.com.alura.leilao.util.PageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
-public class LoginPageObject {
+public class LoginPageObject extends PageObject {
 
     private static final String URL_LOGIN = "http://localhost:8080/login";
+
     private static final String URL_LANCES = "http://localhost:8080/leiloes/2";
 
-    private BrowserWebDriver browserWebDriver;
-
     public LoginPageObject(BrowserWebDriver browserWebDriver) {
-        this.browserWebDriver = browserWebDriver;
+        super(browserWebDriver);
     }
 
     public ListaLeilaoPageObject efetuarLoginUsuario(String username, String password) {
@@ -58,9 +58,5 @@ public class LoginPageObject {
 
     public void navegarParaPaginaLances() {
         this.browserWebDriver.getBrowser().navigate().to(URL_LANCES);
-    }
-
-    public BrowserWebDriver getBrowserWebDriver() {
-        return browserWebDriver;
     }
 }

@@ -3,6 +3,7 @@ package br.com.alura.leilao.leiloes;
 import br.com.alura.leilao.login.LoginPageObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -10,9 +11,19 @@ import java.time.format.DateTimeFormatter;
 
 public abstract class LeilaoTemplateTest {
 
+    protected LoginPageObject loginPageObject;
+
     protected ListaLeilaoPageObject leilaoPageObject;
 
-    //@AfterEach
+    protected CadastroLeilaoPageObject cadastroLeilaoPageObject;
+
+
+    @BeforeEach
+    protected void beforeEach() {
+        this.cadastroLeilaoPageObject = this.getCadastroLeilaoPageObject();
+    }
+
+    @AfterEach
     protected void afterEach() {
         this.leilaoPageObject.getBrowserWebDriver().finalizarNavegador();
     }
@@ -20,21 +31,39 @@ public abstract class LeilaoTemplateTest {
     @Test
     protected void deveCadastrarLeilao() {
         // cenário
-        LoginPageObject loginPageObject = new LoginPageObject(this.leilaoPageObject.getBrowserWebDriver());
-
-        this.leilaoPageObject = loginPageObject.efetuarLoginUsuario("fulano", "pass");
-
-        CadastroLeilaoPageObject cadastroLeilaoPageObject = this.leilaoPageObject.carregarFormulario();
-
-        String hoje = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        String nome = "Leilão do dia " + hoje;
+        String dataCadastro = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String nome = "Leilão do dia " + dataCadastro;
         String valor = "500.00";
 
         // execução
-        this.leilaoPageObject = cadastroLeilaoPageObject.cadastrarLeilao(nome, valor, hoje);
+        this.leilaoPageObject = this.cadastroLeilaoPageObject.cadastrarLeilao(nome, valor, dataCadastro);
 
         // verificação
-        Assertions.assertTrue(this.leilaoPageObject.isLeilaoCadastrado(nome, valor, hoje));
+        Assertions.assertTrue(this.leilaoPageObject.isLeilaoCadastrado(nome, valor, dataCadastro));
+    }
+
+    @Test
+    protected void deveExibirMensagemDePreenchimentoDeCamposNecessariosAoCadastrarLeilao() {
+        // cenário
+        String dataCadastro = "";
+        String nome = "";
+        String valor = "";
+
+        // execução
+        this.leilaoPageObject = this.cadastroLeilaoPageObject.cadastrarLeilao(nome, valor, dataCadastro);
+
+        // verificação
+        Assertions.assertTrue(this.leilaoPageObject.isPaginaAtual());
+        Assertions.assertTrue(this.leilaoPageObject.isMensagensValidacaoVisiveis());
+
+    }
+
+    private CadastroLeilaoPageObject getCadastroLeilaoPageObject() {
+        this.loginPageObject = new LoginPageObject(this.leilaoPageObject.getBrowserWebDriver());
+
+        this.leilaoPageObject = loginPageObject.efetuarLoginUsuario("fulano", "pass");
+
+        return this.leilaoPageObject.carregarFormulario();
     }
 
 }

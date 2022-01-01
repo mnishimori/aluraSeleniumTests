@@ -1,21 +1,19 @@
 package br.com.alura.leilao.leiloes;
 
 import br.com.alura.leilao.infrastructure.BrowserWebDriver;
+import br.com.alura.leilao.util.PageObject;
+import org.h2.mvstore.Page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-public class ListaLeilaoPageObject {
+public class ListaLeilaoPageObject extends PageObject {
 
     private static final String URL_CADASTRO_LEILAO = "http://localhost:8080/leiloes/new";
 
-    private BrowserWebDriver browserWebDriver;
+    private static final String URL_LISTA_LEILOES = "http://localhost:8080/leiloes";
 
     public ListaLeilaoPageObject(BrowserWebDriver browserWebDriver) {
-        this.browserWebDriver = browserWebDriver;
-    }
-
-    public BrowserWebDriver getBrowserWebDriver() {
-        return browserWebDriver;
+        super(browserWebDriver);
     }
 
     public CadastroLeilaoPageObject carregarFormulario() {
@@ -34,5 +32,18 @@ public class ListaLeilaoPageObject {
         return colunaNome.equals(nome) &&
                 colunaValor.equals(valor) &&
                 colunaDataCadastro.equals(dataCadastro);
+    }
+
+    public boolean isPaginaAtual() {
+        return this.browserWebDriver.getBrowser().getCurrentUrl().equals(URL_LISTA_LEILOES);
+    }
+
+    public boolean isMensagensValidacaoVisiveis() {
+        String pageSource = this.browserWebDriver.getBrowser().getPageSource();
+
+        return pageSource.contains("não deve estar em branco") &&
+                pageSource.contains("minimo 3 caracteres") &&
+                pageSource.contains("deve ser um valor maior de 0.1") &&
+                pageSource.contains("deve ser uma data no formato dd/MM/yyyy");
     }
 }
