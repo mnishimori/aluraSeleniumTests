@@ -2,7 +2,6 @@ package br.com.alura.leilao.leiloes;
 
 import br.com.alura.leilao.infrastructure.BrowserWebDriver;
 import br.com.alura.leilao.util.PageObject;
-import org.h2.mvstore.Page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
